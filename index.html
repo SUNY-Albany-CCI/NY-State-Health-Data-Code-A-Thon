@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>NY State Code-A-Thon Examples</title>
+
+    <script type="text/javascript" src="assets/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="assets/strftime.js"></script>
+    <script type="text/javascript" src="assets/ny-health-data-access.js"></script>
+
+    <script>
+      var browserIsIELessThan10 = false;
+      if ($.browser.msie && parseInt($.browser.version, 10) < 10){
+        browserIsIELessThan10 = true;
+        }
+    </script>
+
+    <script type="text/javascript">
+    (function ($, undefined) {
+
+      var NYStateHealthDataGlobal = window.NYStateHealthDataGlobal;
+
+      var resource = 'es3k-2aus'
+
+      NYStateHealthDataGlobal.getResource(resource);
+
+    })(jQuery);
+    </script>
+  </head>
+  <body>
+    <div id="logo">
+      <center>
+        <a href="http://www.health2con.com/devchallenge/new-york-state-health-data-code-a-thon">
+            <h1>NY State Health Code-A-Thon</h1>
+        </a>
+        <img src="http://opensource.org/files/osi_symbol.png" alt="The Symbol" width="480" height="406" border="0" />
+      </center>
+    </div>
+  </body>
+</html>
+
