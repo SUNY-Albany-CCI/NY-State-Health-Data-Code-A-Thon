@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/ewdLite/EWD.js"></script>
+    <title>EWD.js Hello World</title>
+
+    <script>
+      EWD.application = {name: 'helloworld'};
+
+      var sendMessage = function() {
+        EWD.sockets.sendMessage({
+          type: "sendHelloWorld",
+          params: {
+            text: 'Hello World!',
+            sender: 'CATHERINE',
+            date: new Date().toUTCString()
+            }
+        });
+      };
+
+      var getMessage = function() {
+        EWD.sockets.sendMessage({
+          type: "getHelloWorld",
+        });
+      };
+
+      EWD.onSocketMessage = function(messageObj) {
+        if (messageObj.type === 'sendHelloWorld') {
+          var text = 'Your message was successfully saved into ' + messageObj.message.savedInto;
+          document.getElementById('response').innerHTML = text;
+          setTimeout(function() {
+            document.getElementById('response').innerHTML = '';
+          },2000);
+        }
+        if (messageObj.type === 'getHelloWorld') {
+          var text = 'Saved message: ' + JSON.stringify(messageObj.message);
+          document.getElementById('response2').innerHTML = text;
+        }
+      };
+    </script>
+
+      <!--[if (IE 6)|(IE 7)|(IE 8)]>
+      <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js">
+      </script>
+      <![endif]-->
+
+  </head>
+
+  <body onLoad="EWD.isReady()">
+    <h2>EWD.js Hello World Application</h2>
+    <input type="button" value="Send Message" onClick="sendMessage()" />
+    <div id="response"></div>
+    <input type="button" value="Retrieve Saved Message" onClick="getMessage()" />
+    <div id="response2"></div>
+  </body>
+
+</html>
