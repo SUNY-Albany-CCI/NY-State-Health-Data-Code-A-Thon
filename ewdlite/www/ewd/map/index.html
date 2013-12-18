@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/ewdLite/EWD.js"></script>
+    <title>EWD.js Hello World</title>
+
+    <script>
+      EWD.application = {name: 'helloworld'};
+
+      var sendMessage = function() {
+        EWD.sockets.sendMessage({
+          type: "sendHelloWorld",
+          params: {
+            text: 'Good Day World!',
+            sender: 'Luis',
+            date: new Date().toUTCString()
+            }
+        });
+      };
+
+      var getMessage = function() {
+        EWD.sockets.sendMessage({
+          type: "getHelloWorld",
+        });
+      };
+
+      EWD.onSocketMessage = function(messageObj) {
+        if (messageObj.type === 'sendHelloWorld') {
+          var text = 'Your message was successfully saved into ' + messageObj.message.savedInto;
+          document.getElementById('response').innerHTML = text;
+          setTimeout(function() {
+            document.getElementById('response').innerHTML = '';
+          },2000);
+        }
+        if (messageObj.type === 'getHelloWorld') {
+          var text = 'Saved message: ' + JSON.stringify(messageObj.message);
+          document.getElementById('response2').innerHTML = text;
+        }
+      };
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+    <script>
+var map;
+function initialize() {
+  var mapOptions = {
+    zoom: 8,
+    center: new google.maps.LatLng(-34.397, 150.644)
+  };
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+
+      <!--[if (IE 6)|(IE 7)|(IE 8)]>
+      <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js">
+      </script>
+      <![endif]-->
+
+  </head>
+
+  <body onLoad="EWD.isReady()">
+    <h2>EWD.js Hello World Application</h2>
+    <input type="button" value="Send Message" onClick="sendMessage()" />
+    <div id="response"></div>
+    <input type="button" value="Retrieve Saved Message" onClick="getMessage()" />
+    <div id="response2"></div>
+    <div id="map-canvas"></div>
+  </body>
+
+</html>
+
+<!DOCTYPE html>
+    <title>Simple Map</title>
+  <body>
+  </body>
+</html>
