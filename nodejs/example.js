@@ -17,7 +17,8 @@ callback = function(response) {
 
   //the whole response has been recieved, so we just print it out here
   response.on('end', function () {
-    console.log(str);
+    var jsonstr = JSON.parse(str);
+    console.log(JSON.stringify(jsonstr,null,2));
   });
 }
 
