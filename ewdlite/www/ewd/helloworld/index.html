@@ -26,6 +26,12 @@
         });
       };
 
+      var sendQueryMessage = function(querytype) {
+        EWD.sockets.sendMessage({
+          type: querytype,
+        });
+      };
+
       EWD.onSocketMessage = function(messageObj) {
         if (messageObj.type === 'sendHelloWorld') {
           var text = 'Your message was successfully saved into ' + messageObj.message.savedInto;
@@ -37,6 +43,17 @@
         if (messageObj.type === 'getHelloWorld') {
           var text = 'Saved message: ' + JSON.stringify(messageObj.message);
           document.getElementById('response2').innerHTML = text;
+        }
+        if (messageObj.type === 'queryNYStateData') {
+          var text = 'NY State data was successfully saved into ' + messageObj.message.savedInto;
+          document.getElementById('responseQueryNYSData').innerHTML = text;
+          setTimeout(function() {
+            document.getElementById('responseQueryNYSData').innerHTML = '';
+          },2000);
+        }
+        if (messageObj.type === 'getNYStateData') {
+          var text = 'Saved message: ' + JSON.stringify(messageObj.message);
+          document.getElementById('responseGetNYSData').innerHTML = text;
         }
       };
     </script>
@@ -54,6 +71,10 @@
     <div id="response"></div>
     <input type="button" value="Retrieve Saved Message" onClick="getMessage()" />
     <div id="response2"></div>
+    <input type="button" value="Query NY State Data" onClick="sendQueryMessage('queryNYStateData')" />
+    <div id="responseQueryNYSData"></div>
+    <input type="button" value="Get NY State Data" onClick="sendQueryMessage('getNYStateData')" />
+    <div id="responseGetNYSData"></div>
   </body>
 
 </html>
