@@ -38,7 +38,7 @@ makeCallback: function(postProcess, dataOut)
 	return callback;
 },
 
-makeArrayCallback: function(postProcess, dataOut, n)
+makeArrayCallback: function(postProcess, dataOut, n, processArrayData)
 {
 	console.log('make callback');
 	// callback to build data
@@ -61,29 +61,42 @@ makeArrayCallback: function(postProcess, dataOut, n)
 			}
 
 			JSONArray.push(jsonstr);
-				console.log(jsonstr.length);
-				console.log(JSONArray.length);
-				console.log(n);
 
 			if (JSONArray.length == n)
 			{
-				for (var j=0;j<JSONArray[0].length;j++)
+				if (processArrayData)
 				{
-					for (var i=0;i<JSONArray.length;i++)
-					{
-						console.log('test '+j+" "+i);
-						console.log(JSONArray[i][j].percentage_rate);
-					}
-					console.log('');
+					processArrayData(JSONArray);
 				}
-	
 			}
+			
 		});
-
-		
 	}
 
 	return callback;
+},
+
+processArrayData: function(JSONArray)
+{
+	var averaged=[];
+
+	for (var j=0;j<JSONArray[0].length;j++)
+	{
+		var avg=0.0;
+		for (var i=0;i<JSONArray.length;i++)
+		{
+			avg=avg+parseFloat(JSONArray[i][j].percentage_rate);
+			console.log('test '+j+" "+i);
+			console.log(JSONArray[i][j].percentage_rate);
+		}
+		avg=avg/JSONArray.length;
+
+		averaged.push({county_code: j+1, 
+				percentage_rate: avg});
+		console.log('');
+	}
+
+	console.log(averaged);
 },
 
 // process data by county

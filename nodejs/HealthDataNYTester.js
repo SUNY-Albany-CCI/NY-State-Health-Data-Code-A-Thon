@@ -1,8 +1,8 @@
 var http = require('http');
 
-var healthDataNYProcessor = require('HealthDataNYProcessor');
+var healthDataNYProcessor = require('./HealthDataNYProcessor');
 
-// declare a couple of options structures representing SODA requests
+// declare some of options structures representing SODA requests
 var options = {
   host: 'health.data.ny.gov',
  // Diabetes death rate 100000
@@ -18,7 +18,6 @@ var dontExercise ={
   host: 'health.data.ny.gov',
   path: '/resource/vy66-whxp.json'
 };
-
 
 callback = healthDataNYProcessor.makeCallback(healthDataNYProcessor.processCountyData, healthDataNYProcessor.dataToConsole);
 
@@ -42,6 +41,6 @@ var optionsArray=[options, adultsOverweight, dontExercise];
 for (i=0;i<optionsArray.length;i++)
 {
 	console.log("creating callback");
-	callback = healthDataNYProcessor.makeArrayCallback(healthDataNYProcessor.processCountyData, null, optionsArray.length);
+	callback = healthDataNYProcessor.makeArrayCallback(healthDataNYProcessor.processCountyData, null, optionsArray.length, healthDataNYProcessor.processArrayData);
 	http.request(optionsArray[i], callback).end();
 }
